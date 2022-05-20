@@ -137,17 +137,17 @@ Now let's go back to our main index.js file and add our router.
 
 ```
 const Koa = require('koa');
-const app = new Koa();
+const App = new Koa();
 const parser = require('koa-bodyparser')
 const cors = require('@koa/cors')
 const router = require('./router')
 const port = 8000;
 
-app.use(parser())
+App.use(parser())
     .use(cors())
     .use(router.routes())
 
-app.listen(port, () => {
+App.listen(port, () => {
     console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`)
 });
 ```
@@ -165,7 +165,7 @@ Event Posted!
 Lets start by creating our **controllers** directory and our first controller: 
 ```
 mkdir controllers
-touch controllers/events.js
+touch controllers/events.controllers.js
 ```
 We'll call our first controller **events.js**. For now we'll be using a simple 
 ```
@@ -202,7 +202,7 @@ Now let's edit our routes to use our controllers.
 ```
 const Router = require('koa-router')
 const router = new Router()
-const { getEvents, postEvent } = require('./controllers/events')
+const { getEvents, postEvent } = require('./controllers/events.controllers')
 
 router.get('/events_list', getEvents)
 router.post('/post_event', postEvent)
@@ -213,17 +213,21 @@ module.exports = router
 Now let's make a request.
 
 A post request to [**http://127.0.0.1:8000/post_event**](http://127.0.0.1:8000/post_event) should return this response:
+
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rptygpqrtvz31qayy5gd.png)
 
 ```
 'Event Created!'
 ```
 A GET request to [**http://127.0.0.1:8000/events_list**](http://127.0.0.1:8000/events_list) should return the response:
+
 ```
 [
     {
-        "name": "This event",
-        "venue": "Victoria park"
+        "name": "Social Event",
+        "adultsOnly": false,
+        "attendees": 100,
+        "description": "social event description"
     }
 ]
 ```
