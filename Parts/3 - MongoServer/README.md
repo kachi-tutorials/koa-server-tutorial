@@ -1,4 +1,4 @@
-# KOA SQL Server
+# KOA MongoDB Server
 
 Now that our server is up and running the next step is to connect it to a database. 
 
