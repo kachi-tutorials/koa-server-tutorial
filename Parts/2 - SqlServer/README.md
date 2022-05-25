@@ -1,10 +1,12 @@
 # KOA SQL Server
-Now that our server is up and running the next step is to connect it to a database. In this part we will be using a **SQL** database.
+Now that our server is up and running the next step is to connect it to a database. In this part we will be using a **SQL** (postgres) database.
 
 Before we start let's make sure we have [postgres](https://postgresapp.com/downloads.html) installed:
+
 ```
 psql --version
 ```
+
 # Setup
 In this tutorial we will be using sequelize with postgres. So let's start by installing **postgres** and **sequelize**:
 
@@ -13,7 +15,9 @@ npm i pg sequelize
 ```
 
 # Models
-Once postgres is installed lets create our **models folder** and our first model and called it **event.models.js**. 
+Once postgres is installed lets create our **models folder**.
+
+Then let's create two files, an **index.js** file and our first model and called it **event.models.js**. 
 
 Let's run the following commands:
 
@@ -22,21 +26,25 @@ mkdir models
 touch models/index.js
 touch models/event.models.js
 ```
-These commands will create a folder with two files named **index.js** and **event.models.js**. 
 
-We'll start by add the following code to **index.js**:
+Let's first add following code to our **index.js** file:
 
 ```
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('database', 'username', 'password', {
+const settings = {
   host: 'localhost',
   dialect: 'postgres',
-});
+}
+
+const sequelize = new Sequelize('DATABASE', 'USERNAME', 'PASSWORD', settings);
 
 module.exports = sequelize;
 ```
-This file will connect us to our postgres database. Replace the **'database', 'username', 'password'** with your own postgres credentials. 
+
+This file will connect us to our postgres database. 
+
+Replace the **'DATABASE', 'USERNAME', 'PASSWORD'** with your own postgres credentials.
 
 Now let's add the following to **event.models.js**:
 
@@ -56,10 +64,10 @@ Event.sync();
 module.exports = Event
 ```
 
-So what did we just do? We've just created a model named Event and defined the following schemas:
+So what did we just do? We've just created a model named Events and defined the following schemas:
 
 1. **Name** - this will be a string representing the name of the event.
-2. **Adults Only** - this will be a boolean field 
+2. **Adults Only** - this will be a boolean field.
 3. **Attendees** - this will be a number representing the number of attendees
 4. **Description** - this will also be a string field.
 
@@ -102,9 +110,9 @@ Let's move on to the get request!
 
 ## Get Request
 
-On our **event.models.js** file, let's updat the **getEvents** controller. 
+On our **event.models.js** file, let's update the **getEvents** controller. 
 
-We need to update our function to make it async and returns all the event items stored in our postgres.
+We need to update our function to make it async and return all the event items stored in our postgres.
 
 ```
 const getEvents = async ctx => {
@@ -135,3 +143,5 @@ If this works correctly you should get the following:
     }
 ]
 ```
+
+And that is all!
