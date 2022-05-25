@@ -1,5 +1,4 @@
-const mongoose = require('.');
-const Schema = mongoose.Schema;
+const { Schema, model } = require('.');
 
 const eventsSchema = new Schema({
     attendees: Number,
@@ -9,6 +8,6 @@ const eventsSchema = new Schema({
     organizers: String
 });
 
-const Events = mongoose.model('events', eventsSchema);
+const Events = model('Events', eventsSchema);
 
 module.exports = Events;

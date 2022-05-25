@@ -12,4 +12,3 @@ App.use(parser())
 App.listen(port, () => {
     console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`)
 });
-
