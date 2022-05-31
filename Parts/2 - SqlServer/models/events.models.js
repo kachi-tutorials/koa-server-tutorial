@@ -1,13 +1,15 @@
 const sequelize = require('.')
 const { DataTypes } = require('sequelize');
 
-const Event = sequelize.define('Events', {
-  name: DataTypes.STRING,
-  adultsOnly: DataTypes.BOOLEAN,
-  attendees: DataTypes.INTEGER,
-  description: DataTypes.STRING,
+const { STRING, BOOLEAN, INTEGER } = DataTypes
+
+const Events = sequelize.define('Events', {
+  name: STRING,
+  adultsOnly: BOOLEAN,
+  attendees: INTEGER,
+  description: STRING,
 });
 
-Event.sync();
+Events.sync();
 
-module.exports = Event
+module.exports = Events

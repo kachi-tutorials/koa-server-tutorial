@@ -1,8 +1,8 @@
-const Event = require('../models/events.models')
+const Events = require('../models/events.models')
 
 const getEvents = async ctx => {
     try {
-        const foundEvents = await Event.findAll();
+        const foundEvents = await Events.findAll();
         ctx.body = foundEvents;
         ctx.status = 200;
     } catch (err) {
@@ -15,7 +15,7 @@ const postEvent = async ctx => {
     try {
         const { name, adultsOnly, attendees, description } = ctx.request.body;
 
-        await Event.create({ name, adultsOnly, attendees, description });
+        await Events.create({ name, adultsOnly, attendees, description });
 
         ctx.body = 'Event Created!'
         ctx.status = 201;
