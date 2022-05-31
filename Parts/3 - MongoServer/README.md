@@ -1,5 +1,3 @@
-# KOA MongoDB Server
-
 In this part, we'll be starting from where we left off in part 1 but create a NoSQL database instead. To do this we'll be using **MongoDB**. 
 
 Before we start let's make sure we have [**MongoDB**](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/) installed.
@@ -10,15 +8,15 @@ mongod --version
 ```
 If it's installed, let's proceed.
 
-# Setup
-MongoDB is non-relational database, meaning each object we post into our database does not need to be the same. But mongoose allows us to set up schemas which makes our types more strict. 
+## Setup
+MongoDB is non-relational database, meaning each object we post into our database does not need to have the same keys. But mongoose allows us to set up schemas which makes our types more strict. 
 
 In this tutorial we will be using [**Mongoose**](https://mongoosejs.com/). So let's start by installing **Mongoose**:
 
 ```
 npm i mongoose
 ```
-# Models
+## Models
 Once mongoose is installed let's create our **models folder** and our first model and called it **event.models.js**. 
 
 So let's run the following commands:
@@ -126,6 +124,7 @@ const getEvents = async ctx => {
     }
 }
 ```
+Try posting an item to the following endpoint on postman [**http://127.0.0.1:8000/events_list**](http://127.0.0.1:8000/events_list):
 
 If this works correctly you should get the following: 
 
@@ -142,4 +141,4 @@ If this works correctly you should get the following:
 ]
 ```
 
-And that's all she wrote! A mongoDB databse with Koa, quick and painless.
+And that's all she wrote! A mongoDB database with Koa Js, quick and painless.
