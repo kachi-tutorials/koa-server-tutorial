@@ -7,6 +7,8 @@ const getEvents = async ctx => {
         ctx.status = 200
     } catch (err) {
         console.log(err)
+        ctx.status = 500
+        throw(err)
     }
 }
 
@@ -16,7 +18,9 @@ const postEvent = async ctx => {
         ctx.body = 'Event Created!'
         ctx.status = 201;
     } catch (e) {
-        ctx.status = 500;
+        console.log(err)
+        ctx.status = 500
+        throw(err)
     }
 };
 
