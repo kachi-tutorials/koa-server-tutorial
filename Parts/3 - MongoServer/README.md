@@ -1,23 +1,25 @@
 # KOA MongoDB Server
 
-Now that our server is up and running the next step is to connect it to a database. 
+In this part, we'll be starting from where we left off in part 1 but create a NoSQL database instead. To do this we'll be using **MongoDB**. 
 
-In this part we will be using a none-relational database **MongoDB**.
+Before we start let's make sure we have [**MongoDB**](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/) installed.
 
-Before we start let's make sure we have [**MongoDB**](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/) installed:
+Run the following command:
 ```
 mongod --version
 ```
-# Setup
-In this tutorial we will be using [**Mongoose**](https://mongoosejs.com/) with MongoDB. 
+If it's installed, let's proceed.
 
-So let's start by installing **mongoose**:
+# Setup
+MongoDB is non-relational database, meaning each object we post into our database does not need to be the same. But mongoose allows us to set up schemas which makes our types more strict. 
+
+In this tutorial we will be using [**Mongoose**](https://mongoosejs.com/). So let's start by installing **Mongoose**:
 
 ```
 npm i mongoose
 ```
 # Models
-Once postgres is installed lets create our **models folder** and our first model and called it **event.models.js**. 
+Once mongoose is installed let's create our **models folder** and our first model and called it **event.models.js**. 
 
 So let's run the following commands:
 
@@ -49,36 +51,37 @@ This file will connect us to our mongoDB database.
 Now let's add the following to **event.models.js**:
 
 ```
-const mongoose = require('.');
-const Schema = mongoose.Schema;
+const { Schema, model } = require('.');
 
 const eventsSchema = new Schema({
+    attendees: Number,
     name: String,
     adultsOnly: Boolean,
-    attendees: Number,
     description: String,
+    organizers: String
 });
 
-const Events = mongoose.model('events', eventsSchema);
+const Events = model('Events', eventsSchema);
 
 module.exports = Events;
 ```
 
-Although MongoDB is non-relational database, we've can set schemas using mongoose with the following types:
+These are the types we've just created:
 
 1. **Name** - this will be a string representing the name of the event.
-2. **Adults Only** - this will be a boolean field 
-3. **Attendees** - this will be a number representing the number of attendees
+2. **Adults Only** - this will be a boolean field.
+3. **Attendees** - this will be a number representing the number of attendees.
 4. **Description** - this will also be a string field.
 
 ## Controllers
-Let's import the model we just created.
+Let's import the model we just created into our controllers file.
+
 ```
 const events = require('../models/events');
 ```
 
 ## Post Request
-Let's update our post request in our **event.models.js**
+Let's now update our post request in our **event.controllers.js**
 
 The post request takes the request body and creates an object in our mongo database.
 
@@ -88,39 +91,44 @@ The post request takes the request body and creates an object in our mongo datab
 ```
 const postEvent = async ctx => {
     try {
-        await events.create(ctx.request.body);
+        await Events.create(ctx.request.body);
         ctx.body = 'Event Created!'
         ctx.status = 201;
     } catch (e) {
-        ctx.status = 500;
+        console.log(err)
+        ctx.status = 500
+        throw(err)
     }
 };
 ```
 
 Try posting an item to the following endpoint on postman [**http://127.0.0.1:8000/post_event**](http://127.0.0.1:8000/post_event):
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gxzjtsd0img7gdmjx4vd.png)
+![Postman Image](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gxzjtsd0img7gdmjx4vd.png)
 
 Let's move on to the get request!
 
 ## Get Request
-Let's update our get request in our **event.models.js**. 
+Let's also update our get request in our **event.controllers.js**. 
 
 We need to update our function to make it async and returns all the event items stored in our Mongo database.
 
 ```
 const getEvents = async ctx => {
     try {
-        const foundEvents = await events.find();
-        ctx.body = foundEvents;
-        ctx.status = 200;
+        const results = await Events.find()
+        ctx.body = results
+        ctx.status = 200
     } catch (err) {
-        ctx.body = err;
-        ctx.status = 500;
+        console.log(err)
+        ctx.status = 500
+        throw(err)
     }
-};
+}
 ```
+
 If this works correctly you should get the following: 
+
 ```
 [
     {
@@ -133,3 +141,5 @@ If this works correctly you should get the following:
     }
 ]
 ```
+
+And that's all she wrote! A mongoDB databse with Koa, quick and painless.
