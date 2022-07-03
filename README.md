@@ -1,4 +1,4 @@
-## KOA Tutorial
+# KOA Tutorial
 
 **KoaJs** is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs.
 
