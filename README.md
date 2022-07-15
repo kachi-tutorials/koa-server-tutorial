@@ -1,16 +1,14 @@
 # KOA Tutorial
 
-**KoaJs** is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs.
+**`Koa Js`** is a web framework designed by the team behind **`Express`**, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs.
 
-We'll be making a **KoaJs** server from scratch using **NodeJs**.
+In this tutorial, we'll be making a **`Koa Js`** server from scratch using **`Node Js`**.
 
 ## Installation
 
-In order to follow this tutorial you will need to following:
+In order to follow this tutorial you will need to have [**`Node`**](https://nodejs.org/en/download/) installed - ideally at the LTS _(long term support)_ version.
 
-- You must have [**`Node`**](https://nodejs.org/en/download/) installed - ideally at the LTS _(long term support)_ version.
-
-Run the following command on your terminal to check if you have node installed:
+Run the following command in your terminal to check if you have **`Node`** installed:
 
 ```bash
 node --version
@@ -20,7 +18,7 @@ In this tutorial, I will be using [**Visual studio code**](https://code.visualst
 
 ## Set up
 
-Let's start by making running the following commands:
+Let's start by running the following commands:
 
 ```bash
 mkdir koa_tutorial
@@ -30,8 +28,8 @@ npm init -y
 
 ### What did we just do?
 
-1. Creates a folder called **`koa_tutorial`**.
-2. Should contain a file titled **`package.json`** file with the default values.
+1. Created a directory called **`koa_tutorial`**.
+2. Inside our **`koa_tutorial`** directory we should have a file named **`package.json`** with default values.
 
 Now we have our **`package.json`** file, let's install our dependancies by running the following command in our terminal:
 
@@ -45,7 +43,6 @@ npm i koa koa-bodyparser @koa/cors koa-router
 - **`koa-bodyparser`** - this will handle our JSON data and file types.
 - **`@koa/cors`** - this will allow our server port to interact our other ports.
 - **`koa-router`** - enables us to have multiple routes.
-- **`nodemon`** - this package will prevent us from restarting our server every time we make a new changes to our code _(this package is optional)_.
 
 Your **`package.json`** file should now look something like this:
 
@@ -65,7 +62,7 @@ Your **`package.json`** file should now look something like this:
     "@koa/cors": "^3.3.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
-    "koa-router": "^10.1.1"
+    "koa-router": "^11.0.1"
   }
 }
 ```
@@ -74,27 +71,26 @@ Now we're ready to start creating your project!
 
 ## Adding an index file
 
-Next we'll be creating our **`index.js`** file, run the following command in your terminal:
+Firstly, we'll be creating our **`index.js`** file, run the following command in your terminal:
 
 ```bash
 touch index.js
 ```
 
-Let's add the following to our **`index.js`** file:
+Now add the following to our **`index.js`** file:
 
 ```javascript
 const Koa = require("koa");
-const App = new Koa();
 const parser = require("koa-bodyparser");
 const cors = require("@koa/cors");
+const App = new Koa();
 const port = 8000;
 
 App.use(parser())
-  .use(cors());
-
-App.listen(port, () => {
-  console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
-});
+  .use(cors())
+  .listen(port, () => {
+    console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
+  });
 ```
 
 Let's break this down what we've done:
@@ -103,9 +99,11 @@ Let's break this down what we've done:
 2. We created a new server by calling **`new Koa()`** and named the server **`App`**
 3. We have declared the port we want our server to be run on (in our case port **`8000`**).
 4. We enabled our parser and cors by calling them in the **`use`** function of **`Koa`**.
-5. We add a **`listen`** to signal to us when our port is running. In this case it will return a console log on the terminal when we run our server.
+5. We've called **`listen`** from our **`App`** to signal when our port is running. In this case it will **`console log`** on the terminal when we run our server.
 
-So let's run our app to make sure. Let's just run this command in our terminal:
+Now let's run our app to make sure everything is working.
+
+Run this command in our terminal:
 
 ```bash
 node index.js
@@ -117,50 +115,59 @@ If everything has gone according to plan, we should see the following on our ter
 🚀 Server listening http://127.0.0.1:8000/ 🚀
 ```
 
-## Adding an router file
+To kill the server press _`Control + C`_.
 
-Okay let's start making our routes. Run this command to make our **`router.js`** file:
+## Adding an router.js file
+
+Now it's time to make our **`Router`**. Run this command to make our **`router.js`** file:
 
 ```bash
 touch router.js
 ```
 
-Add the following code to our **`router.js`** file:
+Next, add the following code to our **`router.js`** file:
 
 ```javascript
 const Router = require("koa-router");
 const router = new Router();
 
 router.get("/events_list", (ctx) => (ctx.body = "Events List!"));
-router.post("/post_event", (ctx) => (ctx.body = "Event Posted!"));
+router.post("/add_event", (ctx) => (ctx.body = "Event Posted!"));
 
 module.exports = router;
 ```
 
-What we've done is add two routes, **`events_list`** and **`post_event`**.
+What we've done is:
 
-Unlike **Express**, you won't need to declare a **`req` (request)** and **`res` (response)**. **Koa** takes them both in one go as **`ctx` (context)**.
+1. Created our Router in the first 2 lines.
+2. Add two routes, **`events_list`** and **`add_event`**.
+
+### Differences between Express Js and Koa Js:
+
+Unlike **`Express`**, you won't need to declare a **`req` (request)** and **`res` (response)**. **Koa** takes them both in one go as **`ctx` (context)**.
 
 So instead of using **`res.send('Events List!')`** to return a response, we declare the body being returned to the user with **`ctx.body`**.
 
-Now let's go back to our main **`index.js`** file and import our **`router`**.
-Let update our **`index.js`** file with the following code:
+### Update our index.js file
+
+Now let's go back to our **`index.js`** file and import our **`router`**.
+
+Update our **`index.js`** file with the following code:
 
 ```javascript
 const Koa = require("koa");
-const App = new Koa();
 const parser = require("koa-bodyparser");
 const cors = require("@koa/cors");
 const router = require("./router");
+const App = new Koa();
 const port = 8000;
 
 App.use(parser())
   .use(cors())
-  .use(router.routes());
-
-App.listen(port, () => {
-  console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
-});
+  .use(router.routes())
+  .listen(port, () => {
+    console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
+  });
 ```
 
 Now we have two routes:
@@ -171,15 +178,15 @@ Now we have two routes:
 Events List!
 ```
 
-2. A **`POST`** request to [**`http://127.0.0.1:8000/post_event`**](http://127.0.0.1:8000/post_event) should return this response:
+2. A **`POST`** request to [**`http://127.0.0.1:8000/add_event`**](http://127.0.0.1:8000/add_event) should return this response:
 
 ```
 Event Posted!
 ```
 
-## Adding a controllers file
+## Adding our controllers
 
-Controllers are the way we prevent our router file from getting cluttered.
+Controllers are the way we prevent our **`router.js`** file from getting cluttered.
 
 Lets start by creating our **`controllers`** directory and our first controller:
 
@@ -200,7 +207,7 @@ const getEvents = (ctx) => {
   ctx.status = 200;
 };
 
-const postEvent = (ctx) => {
+const addEvent = (ctx) => {
   events_db.push(ctx.request.body);
   ctx.body = "Event Created!";
   ctx.status = 201;
@@ -208,7 +215,7 @@ const postEvent = (ctx) => {
 
 module.exports = {
   getEvents,
-  postEvent,
+  addEvent
 };
 ```
 
@@ -226,17 +233,17 @@ Now let's update our **`router.js`** file:
 ```javascript
 const Router = require("koa-router");
 const router = new Router();
-const { getEvents, postEvent } = require("./controllers/event.controllers");
+const { getEvents, addEvent } = require("./controllers/events.controllers");
 
 router.get("/events_list", getEvents);
-router.post("/post_event", postEvent);
+router.post("/add_event", addEvent);
 
 module.exports = router;
 ```
 
 ## Making our requests
 
-Let's try and make a **`POST`** request to [**`http://127.0.0.1:8000/post_event`**](http://127.0.0.1:8000/post_event) with the following data:
+Let's try and make a **`POST`** request to [**`http://127.0.0.1:8000/add_event`**](http://127.0.0.1:8000/add_event) with the following data:
 
 ```json
 {
