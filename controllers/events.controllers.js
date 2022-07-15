@@ -5,7 +5,7 @@ const getEvents = (ctx) => {
   ctx.status = 200;
 };
 
-const postEvent = (ctx) => {
+const addEvent = (ctx) => {
   events_db.push(ctx.request.body);
   ctx.body = "Event Created!";
   ctx.status = 201;
@@ -13,5 +13,5 @@ const postEvent = (ctx) => {
 
 module.exports = {
   getEvents,
-  postEvent,
+  addEvent
 };
